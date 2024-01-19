@@ -416,7 +416,7 @@ auxLineasDeNavidad ::= creaRegalo FINREGALO | asignaRegalo FINREGALO
                         | NARRA ABRECUENTO exprRegalo CIERRACUENTO FINREGALO
                         //print("",1,2,3)|
                         | NARRA ABRECUENTO l_string_nicolas SEPARAREGALO expresionesBastoncitos CIERRACUENTO FINREGALO
-                                | RETORNAREGALO tlsantaclaus FINREGALO //RETORNAREGALO exprRegalo FINREGALO
+                                | RETORNAREGALO exprRegalo FINREGALO //RETORNAREGALO exprRegalo FINREGALO
                                 | codigoBolsaNavidena
                                 | CORTA FINREGALO 
                                 | error FINREGALO;
