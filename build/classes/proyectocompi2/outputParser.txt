@@ -1,0 +1,36 @@
+
+Tabla de simbolo: func1
+Valores : 
+Tipo Entrada: Funcion, Nombre: func1, Tipo Dato: void.
+Tipo Entrada: Parametro, Nombre: x22, Tipo Dato: char.
+Tipo Entrada: Local, Nombre: miChar, Tipo Dato: char.
+Tipo Entrada: Local, Nombre: str1, Tipo Dato: string.
+Tipo Entrada: Local, Nombre: fl1, Tipo Dato: float.
+Tipo Entrada: Local, Nombre: in1, Tipo Dato: int.
+Tipo Entrada: Local, Nombre: arreglo, Tipo Dato: char[ ] .
+Tipo Entrada: Local, Nombre: mibool, Tipo Dato: boolean.
+
+
+Tabla de simbolo: miFunc
+Valores : 
+Tipo Entrada: Funcion, Nombre: miFunc, Tipo Dato: float.
+Tipo Entrada: Parametro, Nombre: dif, Tipo Dato: int.
+Tipo Entrada: Parametro, Nombre: otra, Tipo Dato: char.
+Tipo Entrada: Parametro, Nombre: otra2, Tipo Dato: char.
+
+
+Tabla de simbolo: func3
+Valores : 
+Tipo Entrada: Funcion, Nombre: func3, Tipo Dato: string.
+Tipo Entrada: Parametro, Nombre: b1, Tipo Dato: string.
+
+
+Tabla de simbolo: main
+Valores : 
+Tipo Entrada: Funcion; Nombre: main; Tipo Dato: int;
+Tipo Entrada: Local, Nombre: b1, Tipo Dato: boolean.
+Tipo Entrada: Local, Nombre: s1, Tipo Dato: string.
+Tipo Entrada: Local, Nombre: bl0, Tipo Dato: boolean.
+Tipo Entrada: Local, Nombre: bl1, Tipo Dato: boolean.
+Tipo Entrada: Local, Nombre: baladaNum, Tipo Dato: boolean.
+
