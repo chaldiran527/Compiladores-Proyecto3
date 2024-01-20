@@ -882,19 +882,29 @@ public class parser extends java_cup.runtime.lr_parser {
         switch(pTipo){
           case "local":
               //System.out.println("Error semantico local en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido al dato ya existente: " + pExpresion);
-              errorActual = "Error semantico local en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido a la variable ya existente: " + pExpresion;
+              errorActual = "Error semantico en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido a la variable ya existente: " + pExpresion;
               this.errores.add(errorActual);
               this.syntaxError = true;
               break;
           case "param":
               //System.out.println("Error semantico local en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido al dato ya existente: " + pExpresion);
-              errorActual = "Error semantico local en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido al parametro repetido: " + pExpresion;
+              errorActual = "Error semantico en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido al parametro repetido: " + pExpresion;
               this.errores.add(errorActual);
               this.syntaxError = true;
               break;
           case "fun":
               //System.out.println("Error semantico local en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido al dato ya existente: " + pExpresion);
-              errorActual = "Error semantico local en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido a la funcion ya existente: " + pExpresion;
+              errorActual = "Error semantico en la linea " + (lex.getLine()+1) + " columna " + lex.getColumn() + ": " + "Debido a la funcion ya existente: " + pExpresion;
+              this.errores.add(errorActual);
+              this.syntaxError = true;
+              break;
+          case "main":
+              errorActual = "Error semantico debido a que no existe funcion main";
+              this.errores.add(errorActual);
+              this.syntaxError = true;
+              break;
+          case "ftipo":
+              errorActual = "Error semantico en la linea " + lex.getLine() + " columna " + lex.getColumn() + ": " + "El tipo " + pExpresion + " no es valido para una funcion";
               this.errores.add(errorActual);
               this.syntaxError = true;
               break;
@@ -935,7 +945,8 @@ class CUP$parser$actions {
     //No tiene params de entrada ni de salida
 //    HashMap<String, ArrayList<String>> listaTablasSimbolos = new HashMap<String, ArrayList<String>>();
     LinkedHashMap<String, ArrayList<String>> listaTablasSimbolos = new LinkedHashMap<String, ArrayList<String>>();
-
+    ArrayList<FunctionObject> funcs = new ArrayList<FunctionObject>();
+    HashMap<String, TablaSimbolo> pilaSimbolos = new HashMap<String, TablaSimbolo>();
     String currHash = "";
     String globalHash = "globalTS";
 
@@ -967,6 +978,7 @@ public void escribirTablaSimbolos() {
         System.err.println("Error escribiendo al archivo: " + e.getMessage());
     }
 }
+
 
     /*Funcion que recibe la tabla de simbolos y el id como hilera para retornar el tipo
     */
@@ -1043,6 +1055,10 @@ public void escribirTablaSimbolos() {
 		
 //        hola();
 //        adios();
+    if (!(listaTablasSimbolos.containsKey("main"))) {
+        //listaTablasSimbolos.get(currHash).add(tipoEntrada);
+        semantic_error("main","");
+    } 
     imprimirTablaSimbolos();
     escribirTablaSimbolos();
     System.out.println("Fin del parseo...\n");
@@ -1107,7 +1123,7 @@ public void escribirTablaSimbolos() {
               Object RESULT =null;
 		//Se ingresan al hash la info de la funcion declarada y se inicializa una nueva tabla de simbolos
 
-                        if (listaTablasSimbolos.containsKey("main")) {
+                        if (listaTablasSimbolos.containsKey("main")) {//Se verifica que no se haya declarado main antes
                             //listaTablasSimbolos.get(currHash).add(tipoEntrada);
                             semantic_error("fun", "main");
                         } 
@@ -1123,7 +1139,11 @@ public void escribirTablaSimbolos() {
                             funMain.add(tipoEntrada);
                             funMain.add(nombreDato);
                             funMain.add(tipoTabla); 
+                            pilaSimbolos.put(currHash, new TablaSimbolo()); //Cambiar contexto
+                            RESULT = "main";
+                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "int", "main")); //Agregar nuevo simbolo
                             listaTablasSimbolos.put(currHash, funMain); 
+                            funcs.add(new FunctionObject("main", TipoDato.INT, new TipoDato[] {}, true));
                         }                        
                     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bolsasNavidenas",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1150,23 +1170,34 @@ public void escribirTablaSimbolos() {
                         else{
                         }
 */
-                        if (listaTablasSimbolos.containsKey(per.toString())) {
-                            //listaTablasSimbolos.get(currHash).add(tipoEntrada);
-                            semantic_error("fun", per.toString());
-                        } 
+                        var tipoStr = t.toString();
+                        if (!tipoStr.equals("char") && !tipoStr.equals("int") && !tipoStr.equals("float") && !tipoStr.equals("boolean")) {
+                            semantic_error("ftipo", tipoStr);
+                        }
                         else{
-                            currHash = per.toString();
-                            String tipoDato = " Tipo Dato: ";
-                            tipoDato =  tipoDato + t.toString()  + ".\n";
-                            String nombreDato = " Nombre: ";
-                            nombreDato = nombreDato + per.toString() + ",";
-                            String tipoEntrada = "Tipo Entrada: ";
-                            tipoEntrada = tipoEntrada + "Funcion" + ",";
-                            tipoEntrada = tipoEntrada + nombreDato + tipoDato;
-                            ArrayList<String> fun = new ArrayList<String>();
-                            fun.add(tipoEntrada);
-                            //listaTablasSimbolos.get(currHash).add(tipoEntrada); 
-                            listaTablasSimbolos.put(currHash, fun);
+                            if (listaTablasSimbolos.containsKey(per.toString())) {
+                                //listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                semantic_error("fun", per.toString());
+                            } 
+                            else{
+                                currHash = per.toString();
+                                String tipoDato = " Tipo Dato: ";
+                                tipoDato =  tipoDato + t.toString()  + ".\n";
+                                String nombreDato = " Nombre: ";
+                                nombreDato = nombreDato + per.toString() + ",";
+                                String tipoEntrada = "Tipo Entrada: ";
+                                tipoEntrada = tipoEntrada + "Funcion" + ",";
+                                tipoEntrada = tipoEntrada + nombreDato + tipoDato;
+                                ArrayList<String> fun = new ArrayList<String>();
+                                fun.add(tipoEntrada);
+                                //listaTablasSimbolos.get(currHash).add(tipoEntrada); 
+                                pilaSimbolos.put(currHash, new TablaSimbolo()); //Cambiar contexto
+
+                                RESULT = per.toString();
+                                pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", t.toString(), per.toString())); //Agregar nuevo simbolo
+                                listaTablasSimbolos.put(currHash, fun);
+                                funcs.add(new FunctionObject("main", Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
+                            }
                         }
                     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bolsasNavidenas",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1181,6 +1212,8 @@ public void escribirTablaSimbolos() {
 		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		 //Se ingresan al hash la info de la funcion declarada y se inicializa una nueva tabla de simbolos
+                        
+
                         if (listaTablasSimbolos.containsKey(per.toString())) {
                             //listaTablasSimbolos.get(currHash).add(tipoEntrada);
                             semantic_error("fun", per.toString());
@@ -1196,10 +1229,15 @@ public void escribirTablaSimbolos() {
                             tipoEntrada = tipoEntrada + nombreDato + tipoDato;
                             ArrayList<String> fun = new ArrayList<String>();
                             fun.add(tipoEntrada);
-                            //listaTablasSimbolos.get(currHash).add(tipoEntrada); 
-                            listaTablasSimbolos.put(currHash, fun);
-                        }
+                            //listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                            pilaSimbolos.put(currHash, new TablaSimbolo()); //Cambiar contexto
 
+                            RESULT = per.toString();
+                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "void", per.toString())); //Agregar nuevo simbolo 
+                            listaTablasSimbolos.put(currHash, fun);
+                            funcs.add(new FunctionObject("main", TipoDato.VOID, new TipoDato[] {}, false));
+                        }
+                        
 
                     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("bolsasNavidenas",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1217,23 +1255,34 @@ public void escribirTablaSimbolos() {
 		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
  //Se ingresan al hash la info de la funcion declarada y se inicializa una nueva tabla de simbolos
-                        if (listaTablasSimbolos.containsKey(per.toString())) {
-                            //listaTablasSimbolos.get(currHash).add(tipoEntrada);
-                            semantic_error("fun", per.toString());
-                        } 
+                        var tipoStr = t.toString();
+                        if (!tipoStr.equals("char") && !tipoStr.equals("int") && !tipoStr.equals("float") && !tipoStr.equals("boolean")) {
+                            semantic_error("ftipo", tipoStr);
+                        }
                         else{
-                            currHash = per.toString();
-                            String tipoDato = " Tipo Dato: ";
-                            tipoDato =  tipoDato + t.toString()  + ".\n";
-                            String nombreDato = " Nombre: ";
-                            nombreDato = nombreDato + per.toString() + ",";
-                            String tipoEntrada = "Tipo Entrada: ";
-                            tipoEntrada = tipoEntrada + "Funcion" + ",";
-                            tipoEntrada = tipoEntrada + nombreDato + tipoDato;
-                            ArrayList<String> fun = new ArrayList<String>();
-                            fun.add(tipoEntrada);
-                            //listaTablasSimbolos.get(currHash).add(tipoEntrada); 
-                            listaTablasSimbolos.put(currHash, fun);
+                            if (listaTablasSimbolos.containsKey(per.toString())) {
+                                //listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                semantic_error("fun", per.toString());
+                            } 
+                            else{
+                                currHash = per.toString();
+                                String tipoDato = " Tipo Dato: ";
+                                tipoDato =  tipoDato + t.toString()  + ".\n";
+                                String nombreDato = " Nombre: ";
+                                nombreDato = nombreDato + per.toString() + ",";
+                                String tipoEntrada = "Tipo Entrada: ";
+                                tipoEntrada = tipoEntrada + "Funcion" + ",";
+                                tipoEntrada = tipoEntrada + nombreDato + tipoDato;
+                                ArrayList<String> fun = new ArrayList<String>();
+                                fun.add(tipoEntrada);
+                                //listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                pilaSimbolos.put(currHash, new TablaSimbolo()); //Cambiar contexto
+
+                                RESULT = per.toString();
+                                pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", t.toString(), per.toString())); //Agregar nuevo simbolo  
+                                listaTablasSimbolos.put(currHash, fun);
+                                funcs.add(new FunctionObject("main", Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
+                            }
                         }
 
                     
@@ -1282,6 +1331,11 @@ public void escribirTablaSimbolos() {
                             ArrayList<String> fun = new ArrayList<String>();
                             fun.add(tipoEntrada);
                             listaTablasSimbolos.put(currHash, fun);
+                            pilaSimbolos.put(currHash, new TablaSimbolo()); //Cambiar contexto
+
+                            RESULT = per.toString();
+                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "void", per.toString())); //Agregar nuevo simbolo 
+                            funcs.add(new FunctionObject("main", TipoDato.VOID, new TipoDato[] {}, false));
                         }                     
 
                     

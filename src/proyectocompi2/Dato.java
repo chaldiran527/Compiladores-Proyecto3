@@ -6,7 +6,7 @@ package proyectocompi2;
 
 //Constantes de los tipos de datos empleados en la gramaticaa
 enum TipoDato{
-     INT, CHAR, FLOAT, STRING, BOOLEAN, INTARR, CHARARR, NULO;
+     INT, CHAR, FLOAT, STRING, BOOLEAN, INTARR, CHARARR, NULO, VOID;
  }
 /**
  *
@@ -50,6 +50,8 @@ public class Dato {
                 return TipoDato.CHARARR;
             case "int[]":
                 return TipoDato.INTARR;
+            case "void":
+                return TipoDato.VOID;
             default:
                 return TipoDato.NULO;
         }

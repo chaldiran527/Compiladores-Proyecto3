@@ -574,15 +574,15 @@ Codigo Token: 11, Nombre Token: t_string_nicolas, Valor: string, Linea: 59, Colu
 
 Codigo Token: 48, Nombre Token: PERSONA, Valor: func3, Linea: 59, Columna: 17
 
-Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 59, Columna: 22
+Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 59, Columna: 23
 
-Codigo Token: 11, Nombre Token: t_string_nicolas, Valor: string, Linea: 59, Columna: 23
+Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 59, Columna: 24
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: b1, Linea: 59, Columna: 30
+Codigo Token: 48, Nombre Token: PERSONA, Valor: la, Linea: 59, Columna: 28
 
-Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 59, Columna: 32
+Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 59, Columna: 30
 
-Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 59, Columna: 33
+Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 59, Columna: 31
 
 Codigo Token: 52, Nombre Token: RETORNAREGALO, Valor: return, Linea: 60, Columna: 2
 
@@ -594,15 +594,15 @@ Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 61, Columna: 1
 
 Codigo Token: 54, Nombre Token: FESTIVAL, Valor: function, Linea: 63, Columna: 1
 
-Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 63, Columna: 10
+Codigo Token: 53, Nombre Token: SINREGALO, Valor: void, Linea: 63, Columna: 10
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: func3, Linea: 63, Columna: 14
+Codigo Token: 48, Nombre Token: PERSONA, Valor: funci, Linea: 63, Columna: 15
 
-Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 63, Columna: 19
+Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 63, Columna: 21
 
-Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 63, Columna: 20
+Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 63, Columna: 23
 
-Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 63, Columna: 21
+Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 63, Columna: 24
 
 Codigo Token: 52, Nombre Token: RETORNAREGALO, Valor: return, Linea: 64, Columna: 2
 
@@ -612,17 +612,17 @@ Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 64, Columna: 10
 
 Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 65, Columna: 1
 
-Codigo Token: 54, Nombre Token: FESTIVAL, Valor: function, Linea: 67, Columna: 1
+Codigo Token: 54, Nombre Token: FESTIVAL, Valor: function, Linea: 68, Columna: 1
 
-Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 67, Columna: 10
+Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 68, Columna: 10
 
-Codigo Token: 56, Nombre Token: ARBOL, Valor: main, Linea: 67, Columna: 14
+Codigo Token: 56, Nombre Token: ARBOL, Valor: main, Linea: 68, Columna: 14
 
-Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 67, Columna: 18
+Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 68, Columna: 18
 
-Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 67, Columna: 19
+Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 68, Columna: 19
 
-Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 67, Columna: 20
+Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 68, Columna: 20
 
 Codigo Token: 59, Nombre Token: NATIVIDAD, Valor: local, Linea: 73, Columna: 2
 

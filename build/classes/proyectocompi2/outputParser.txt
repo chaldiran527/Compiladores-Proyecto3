@@ -17,12 +17,12 @@ Tipo Entrada: Funcion, Nombre: miFunc, Tipo Dato: float.
 Tipo Entrada: Parametro, Nombre: dif, Tipo Dato: int.
 Tipo Entrada: Parametro, Nombre: otra, Tipo Dato: char.
 Tipo Entrada: Parametro, Nombre: otra2, Tipo Dato: char.
+Tipo Entrada: Parametro, Nombre: la, Tipo Dato: int.
 
 
-Tabla de simbolo: func3
+Tabla de simbolo: funci
 Valores : 
-Tipo Entrada: Funcion, Nombre: func3, Tipo Dato: string.
-Tipo Entrada: Parametro, Nombre: b1, Tipo Dato: string.
+Tipo Entrada: Funcion, Nombre: funci, Tipo Dato: void.
 
 
 Tabla de simbolo: main

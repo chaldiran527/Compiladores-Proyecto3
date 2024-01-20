@@ -56,18 +56,18 @@ function float miFunc(int dif,char otra,char otra2){
 	return 1| @semantico
 }
 
-function string func3(string b1){ @semantico string
+function string func3 (int la){ @semantico string
 	return 1| 
 }
 
-function int func3(){ @semantico string
+function void funci ( ){ @semantico string
 	return 1| 
 }
+
 
 function int main(){ @function
-/_
-Comentario 1
-_/
+
+@Comentario 1
 	
 @comentario 2
 	local boolean b1|
