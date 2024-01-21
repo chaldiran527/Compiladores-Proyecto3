@@ -93,6 +93,15 @@ public void escribirTablaSimbolos() {
       return null;
     }
 
+    public FunctionObject buscarFunc(String pId){
+      for(FunctionObject func : funcs){
+        if(func.getIdFuncion().equals(pId)){
+            return func;
+        }
+      }
+      return null;
+    }
+
 
     public TipoDato getTipo(String pId, boolean reportar){
         for (Simbolo dato : pilaSimbolos.get(currHash).getTablaSimbolos()) {
@@ -380,7 +389,7 @@ bolsasNavidenas ::= FESTIVAL t_int_sinterklass ARBOL ABRECUENTO CIERRACUENTO
                                 RESULT = per.toString();
                                 pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", t.toString(), per.toString())); //Agregar nuevo simbolo
                                 listaTablasSimbolos.put(currHash, fun);
-                                funcs.add(new FunctionObject("main", Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
+                                funcs.add(new FunctionObject(per.toString(), Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
                             }
                         }
                     :}
@@ -409,7 +418,7 @@ bolsasNavidenas ::= FESTIVAL t_int_sinterklass ARBOL ABRECUENTO CIERRACUENTO
                             RESULT = per.toString();
                             pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "void", per.toString())); //Agregar nuevo simbolo 
                             listaTablasSimbolos.put(currHash, fun);
-                            funcs.add(new FunctionObject("main", TipoDato.VOID, new TipoDato[] {}, false));
+                            funcs.add(new FunctionObject(per.toString(), TipoDato.VOID, new TipoDato[] {}, false));
                         }
                         
 
@@ -443,7 +452,7 @@ bolsasNavidenas ::= FESTIVAL t_int_sinterklass ARBOL ABRECUENTO CIERRACUENTO
                                 RESULT = per.toString();
                                 pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", t.toString(), per.toString())); //Agregar nuevo simbolo  
                                 listaTablasSimbolos.put(currHash, fun);
-                                funcs.add(new FunctionObject("main", Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
+                                funcs.add(new FunctionObject(per.toString(), Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
                             }
                         }
 
@@ -473,7 +482,7 @@ bolsasNavidenas ::= FESTIVAL t_int_sinterklass ARBOL ABRECUENTO CIERRACUENTO
 
                             RESULT = per.toString();
                             pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "void", per.toString())); //Agregar nuevo simbolo 
-                            funcs.add(new FunctionObject("main", TipoDato.VOID, new TipoDato[] {}, false));
+                            funcs.add(new FunctionObject(per.toString(), TipoDato.VOID, new TipoDato[] {}, false));
                         }                     
 
                     :}
@@ -709,8 +718,26 @@ asignaRegalo ::= PERSONA ABREEMPAQUE exprRegalo CIERRAEMPAQUE ENTREGA exprRegalo
 asignaMultiplesRegalos ::= ENTREGA ABREREGALO expresionesBastoncitos CIERRAREGALO;
 
 //Diferentes casos posibles de llamar a una funcion 
-pedirBolsaNavidena ::= PERSONA ABRECUENTO CIERRACUENTO |
+pedirBolsaNavidena ::= PERSONA:per ABRECUENTO CIERRACUENTO 
+{:
+    RESULT = new Dato("null", TipoDato.NULO);
+    var func = buscarFunc(per.toString()); //
+    if (func == null) {
+       semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido la funcion: " + per.toString()) );
+    }
+    else {
+      if (func.getTParams().length > 0) {
+        semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que faltan parametros en la funcion: " + per.toString()) );
+      }
+      else {
+        RESULT = new Dato("null", func.getTipoReturn());
+      }
+    }
+:}
+
+                                           |
 					   PERSONA ABRECUENTO expresionesBastoncitos CIERRACUENTO
+
 					   | readBolsaNavidena ;//printBolsaNavidena ;//;
 
 
@@ -780,12 +807,127 @@ else_duende ::= DUENDE ABREREGALO lineasDeNavidad CIERRAREGALO ;
 
 //Operaciones relacionales
 // a > b,  a < b, a == b, a != b, a => b, a =< b
-regalocompradoRelacional ::= exprRegalo:a g_merryberry exprRegalo:b | 
-                                    exprRegalo:a l_slinky exprRegalo:b |
-                                    exprRegalo:a e_jinglebell exprRegalo:b |
-                                    exprRegalo:a ne_tinseltoes exprRegalo:b |
-                                    exprRegalo:a ge_snowflake exprRegalo:b |
-                                    exprRegalo:a le_candycane exprRegalo:b ;
+regalocompradoRelacional ::= exprRegalo:a g_merryberry exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos(">", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " > " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " > " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :}  
+                                | 
+                            exprRegalo:a l_slinky exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("<", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " < " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " < " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :} 
+                                |
+                            exprRegalo:a e_jinglebell exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("==", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " == " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " == " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :} 
+                                |
+                             exprRegalo:a ne_tinseltoes exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("!=", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " != " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " != " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :} 
+                                |
+                            exprRegalo:a ge_snowflake exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("=>", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " => " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " => " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :} 
+                                
+                                |
+                                    exprRegalo:a le_candycane exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("=<", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " =< " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " =< " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :} ;
+
 
 //Lista de expresiones (,,), definidos recursivamente para poder tener uno o mas 
 expresionesBastoncitos ::= defExprBastoncito | expresionesBastoncitos SEPARAREGALO  defExprBastoncito ;

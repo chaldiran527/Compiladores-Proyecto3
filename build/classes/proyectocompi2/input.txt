@@ -16,7 +16,8 @@ function void func1(char x22,char x22, int x23){@semantico borrar parametro
         local int hola <= 3.1 / 6.2|
         x22|@miChar|
         ++x23|
-        local int hola2 <= !true|
+        local int hola2 <= func1()|
+
 /_@INICIO COMENTARIO 1
         var <= ++var + 1 + funciont()|
 	local boolean mibool <= false|

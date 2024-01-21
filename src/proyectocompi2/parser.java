@@ -1023,6 +1023,15 @@ public void escribirTablaSimbolos() {
       return null;
     }
 
+    public FunctionObject buscarFunc(String pId){
+      for(FunctionObject func : funcs){
+        if(func.getIdFuncion().equals(pId)){
+            return func;
+        }
+      }
+      return null;
+    }
+
 
     public TipoDato getTipo(String pId, boolean reportar){
         for (Simbolo dato : pilaSimbolos.get(currHash).getTablaSimbolos()) {
@@ -1242,7 +1251,7 @@ public void escribirTablaSimbolos() {
                                 RESULT = per.toString();
                                 pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", t.toString(), per.toString())); //Agregar nuevo simbolo
                                 listaTablasSimbolos.put(currHash, fun);
-                                funcs.add(new FunctionObject("main", Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
+                                funcs.add(new FunctionObject(per.toString(), Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
                             }
                         }
                     
@@ -1281,7 +1290,7 @@ public void escribirTablaSimbolos() {
                             RESULT = per.toString();
                             pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "void", per.toString())); //Agregar nuevo simbolo 
                             listaTablasSimbolos.put(currHash, fun);
-                            funcs.add(new FunctionObject("main", TipoDato.VOID, new TipoDato[] {}, false));
+                            funcs.add(new FunctionObject(per.toString(), TipoDato.VOID, new TipoDato[] {}, false));
                         }
                         
 
@@ -1327,7 +1336,7 @@ public void escribirTablaSimbolos() {
                                 RESULT = per.toString();
                                 pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", t.toString(), per.toString())); //Agregar nuevo simbolo  
                                 listaTablasSimbolos.put(currHash, fun);
-                                funcs.add(new FunctionObject("main", Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
+                                funcs.add(new FunctionObject(per.toString(), Dato.tipoFromString(t.toString()), new TipoDato[] {}, false));
                             }
                         }
 
@@ -1381,7 +1390,7 @@ public void escribirTablaSimbolos() {
 
                             RESULT = per.toString();
                             pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("funcion", "void", per.toString())); //Agregar nuevo simbolo 
-                            funcs.add(new FunctionObject("main", TipoDato.VOID, new TipoDato[] {}, false));
+                            funcs.add(new FunctionObject(per.toString(), TipoDato.VOID, new TipoDato[] {}, false));
                         }                     
 
                     
@@ -1951,6 +1960,23 @@ public void escribirTablaSimbolos() {
           case 49: // pedirBolsaNavidena ::= PERSONA ABRECUENTO CIERRACUENTO 
             {
               Object RESULT =null;
+		int perleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		
+    RESULT = new Dato("null", TipoDato.NULO);
+    var func = buscarFunc(per.toString()); //
+    if (func == null) {
+       semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido la funcion: " + per.toString()) );
+    }
+    else {
+      if (func.getTParams().length > 0) {
+        semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que faltan parametros en la funcion: " + per.toString()) );
+      }
+      else {
+        RESULT = new Dato("null", func.getTipoReturn());
+      }
+    }
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("pedirBolsaNavidena",21, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2332,7 +2358,24 @@ public void escribirTablaSimbolos() {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos(">", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " > " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " > " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2347,7 +2390,24 @@ public void escribirTablaSimbolos() {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("<", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " < " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " < " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2362,7 +2422,24 @@ public void escribirTablaSimbolos() {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("==", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " == " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " == " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2377,7 +2454,24 @@ public void escribirTablaSimbolos() {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("!=", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " != " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " != " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2392,7 +2486,24 @@ public void escribirTablaSimbolos() {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("=>", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " => " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " => " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2407,7 +2518,24 @@ public void escribirTablaSimbolos() {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("=<", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " =< " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " =< " + e2.getValor().toString()), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
