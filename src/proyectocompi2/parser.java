@@ -2326,6 +2326,12 @@ public void escribirTablaSimbolos() {
           case 87: // regalocompradoRelacional ::= exprRegalo g_merryberry exprRegalo 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2335,6 +2341,12 @@ public void escribirTablaSimbolos() {
           case 88: // regalocompradoRelacional ::= exprRegalo l_slinky exprRegalo 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2344,6 +2356,12 @@ public void escribirTablaSimbolos() {
           case 89: // regalocompradoRelacional ::= exprRegalo e_jinglebell exprRegalo 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2353,6 +2371,12 @@ public void escribirTablaSimbolos() {
           case 90: // regalocompradoRelacional ::= exprRegalo ne_tinseltoes exprRegalo 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2362,6 +2386,12 @@ public void escribirTablaSimbolos() {
           case 91: // regalocompradoRelacional ::= exprRegalo ge_snowflake exprRegalo 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2371,6 +2401,12 @@ public void escribirTablaSimbolos() {
           case 92: // regalocompradoRelacional ::= exprRegalo le_candycane exprRegalo 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regalocompradoRelacional",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2474,7 +2510,26 @@ public void escribirTablaSimbolos() {
           case 99: // regaloManual ::= exprRegalo and_melchior exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.BOOLEAN));
+                            var type = validarTipos("AND", e1, e2, tipos);
+                            if(type == TipoDato.BOOLEAN){
+//                               System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " ^ " + e2.getValor().toString(), TipoDato.BOOLEAN);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloManual",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2483,7 +2538,26 @@ public void escribirTablaSimbolos() {
           case 100: // regaloManual ::= exprRegalo or_balthassar exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.BOOLEAN));
+                            var type = validarTipos("OR", e1, e2, tipos);
+                            if(type == TipoDato.BOOLEAN){
+//                               System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " # " + e2.getValor().toString(), TipoDato.BOOLEAN);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloManual",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2492,7 +2566,30 @@ public void escribirTablaSimbolos() {
           case 101: // regaloManual ::= not_gaspar exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT, TipoDato.BOOLEAN));
+                            var type = validarTipos("NOT", e1, e1, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato("! " + e1.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato("! " + e1.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else if(type == TipoDato.BOOLEAN){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato("! " + e1.getValor().toString(), TipoDato.BOOLEAN);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloManual",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2508,7 +2605,7 @@ public void escribirTablaSimbolos() {
 
                         var type = getTipo(per.toString(),false);
                         if((existeValor(per.toString())) != null){
-                            System.out.println("ENTRO AQUILAS?");
+//                            System.out.println("ENTRO AQUILAS?");
                             semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + per.toString()));
                             RESULT = new Dato("null", TipoDato.NULO);
                         }
@@ -2543,7 +2640,7 @@ public void escribirTablaSimbolos() {
 
                         var type = getTipo(per.toString(),false);
                         if((existeValor(per.toString())) != null){
-                            System.out.println("ENTRO AQUILAS?");
+//                            System.out.println("ENTRO AQUILAS?");
                             semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + per.toString()));
                             RESULT = new Dato("null", TipoDato.NULO);
                         }

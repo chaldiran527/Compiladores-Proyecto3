@@ -176,6 +176,20 @@ Codigo Token: 48, Nombre Token: PERSONA, Valor: x23, Linea: 18, Columna: 11
 
 Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 18, Columna: 14
 
-Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 28, Columna: 1
+Codigo Token: 59, Nombre Token: NATIVIDAD, Valor: local, Linea: 19, Columna: 9
 
-Cantidad de lexemas encontrados: 90
+Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 19, Columna: 15
+
+Codigo Token: 48, Nombre Token: PERSONA, Valor: hola2, Linea: 19, Columna: 19
+
+Codigo Token: 51, Nombre Token: ENTREGA, Valor: <=, Linea: 19, Columna: 25
+
+Codigo Token: 33, Nombre Token: not_gaspar, Valor: !, Linea: 19, Columna: 28
+
+Codigo Token: 37, Nombre Token: l_tPAPANOEL, Valor: true, Linea: 19, Columna: 29
+
+Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 19, Columna: 33
+
+Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 29, Columna: 1
+
+Cantidad de lexemas encontrados: 97

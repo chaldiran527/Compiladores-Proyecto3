@@ -10,4 +10,5 @@ Tipo Entrada: Local, Nombre: fl1, Tipo Dato: float.
 Tipo Entrada: Local, Nombre: in1, Tipo Dato: int.
 Tipo Entrada: Local, Nombre: arreglo, Tipo Dato: char[ ] .
 Tipo Entrada: Local, Nombre: hola, Tipo Dato: int.
+Tipo Entrada: Local, Nombre: hola2, Tipo Dato: int.
 

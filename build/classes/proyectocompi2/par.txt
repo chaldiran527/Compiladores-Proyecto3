@@ -780,12 +780,12 @@ else_duende ::= DUENDE ABREREGALO lineasDeNavidad CIERRAREGALO ;
 
 //Operaciones relacionales
 // a > b,  a < b, a == b, a != b, a => b, a =< b
-regalocompradoRelacional ::= exprRegalo g_merryberry exprRegalo | 
-                                    exprRegalo l_slinky exprRegalo |
-                                    exprRegalo e_jinglebell exprRegalo |
-                                    exprRegalo ne_tinseltoes exprRegalo |
-                                    exprRegalo ge_snowflake exprRegalo |
-                                    exprRegalo le_candycane exprRegalo ;
+regalocompradoRelacional ::= exprRegalo:a g_merryberry exprRegalo:b | 
+                                    exprRegalo:a l_slinky exprRegalo:b |
+                                    exprRegalo:a e_jinglebell exprRegalo:b |
+                                    exprRegalo:a ne_tinseltoes exprRegalo:b |
+                                    exprRegalo:a ge_snowflake exprRegalo:b |
+                                    exprRegalo:a le_candycane exprRegalo:b ;
 
 //Lista de expresiones (,,), definidos recursivamente para poder tener uno o mas 
 expresionesBastoncitos ::= defExprBastoncito | expresionesBastoncitos SEPARAREGALO  defExprBastoncito ;
@@ -833,16 +833,68 @@ defParamBastoncito ::= tsantaclaus:t PERSONA:per
 
 //Operaciones logicas
 // a ^ b, a # b, !a 
-regaloManual ::= exprRegalo and_melchior exprRegalo |
-				exprRegalo or_balthassar exprRegalo |
-				not_gaspar exprRegalo ;
+regaloManual ::= exprRegalo:a and_melchior exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.BOOLEAN));
+                            var type = validarTipos("AND", e1, e2, tipos);
+                            if(type == TipoDato.BOOLEAN){
+//                               System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " ^ " + e2.getValor().toString(), TipoDato.BOOLEAN);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :}  
+                            |
+                            exprRegalo:a or_balthassar exprRegalo:b 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.BOOLEAN));
+                            var type = validarTipos("OR", e1, e2, tipos);
+                            if(type == TipoDato.BOOLEAN){
+//                               System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " # " + e2.getValor().toString(), TipoDato.BOOLEAN);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :}  
+                            |
+			   not_gaspar exprRegalo:a 
+{:
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT, TipoDato.BOOLEAN));
+                            var type = validarTipos("NOT", e1, e1, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato("! " + e1.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato("! " + e1.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else if(type == TipoDato.BOOLEAN){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato("! " + e1.getValor().toString(), TipoDato.BOOLEAN);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } :}
+                            ;
 
 //Operaciones aritmeticas unarias --a, ++a, a++, a--
 regaloprinUnario ::= QUIEN PERSONA:per {:
 
                         var type = getTipo(per.toString(),false);
                         if((existeValor(per.toString())) != null){
-                            System.out.println("ENTRO AQUILAS?");
+//                            System.out.println("ENTRO AQUILAS?");
                             semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + per.toString()));
                             RESULT = new Dato("null", TipoDato.NULO);
                         }
@@ -868,7 +920,7 @@ regaloprinUnario ::= QUIEN PERSONA:per {:
 
                         var type = getTipo(per.toString(),false);
                         if((existeValor(per.toString())) != null){
-                            System.out.println("ENTRO AQUILAS?");
+//                            System.out.println("ENTRO AQUILAS?");
                             semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + per.toString()));
                             RESULT = new Dato("null", TipoDato.NULO);
                         }
