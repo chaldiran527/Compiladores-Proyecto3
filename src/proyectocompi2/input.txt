@@ -1,6 +1,6 @@
  /_ esto es un comentario inicial _/
 
-function void func1(char x22,char x22){@semantico borrar parametro
+function void func1(char x22,char x22, int x23){@semantico borrar parametro
 	local char x22 <= '!'| /_semantico x22_/
 	local char miChar <= '!'|
 	local char miChar <= '!'| @sintactico
@@ -13,16 +13,21 @@ function void func1(char x22,char x22){@semantico borrar parametro
 	local char arreglo [10]| @sintatico lit
         local int arreglo [2] <= {1,2,3,4}|
 	@arr[1] <= 'c'|
+        local int hola <= 3.1 / 6.2|
+        x22|@miChar|
+        ++x23|
+/_@INICIO COMENTARIO 1
         var <= ++var + 1 + funciont()|
-	local boolean mibool <= true|
-
+	local boolean mibool <= false|
+        local int hola|
 	local int in1 <= --fl1 ~ -14 / ++in1 + 7 - 15 **  func1(hola, true, "hola mundo", 4.5, 'a') | @semantico fl1, in1
 	mibool <= ( 1 + ( 2 ) * 4 ) < 56 ^ true # mibool # !mibool| @semantico literal 76
 
 	return -5.6|@cambio en retorno genera semantico
-
+_/@FIN COMENTARIO 1
 } 
 
+/_@INICIO COMENTARIO 2
 function float miFunc(int dif,char otra,char otra2){	
 	@for(i <= 10| i < 30| ++i)
         for(i <= 0| i < 2| ++i){
@@ -87,3 +92,4 @@ function int main(){
 	local boolean baladaNum <= 6.7 != 8.9| @ok
 }
 
+_/@FIN COMENTARIO 2

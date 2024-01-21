@@ -16,6 +16,8 @@ import java.util.List;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.*;
+import java.util.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -904,8 +906,12 @@ public class parser extends java_cup.runtime.lr_parser {
               this.syntaxError = true;
               break;
           case "ftipo":
-              errorActual = "Error semantico en la linea " + lex.getLine() + " columna " + lex.getColumn() + ": " + "El tipo " + pExpresion + " no es valido para una funcion";
+              errorActual = "Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + pExpresion + " no es valido para una funcion";
               this.errores.add(errorActual);
+              this.syntaxError = true;
+              break;
+           case "misc":
+              this.errores.add(pExpresion);
               this.syntaxError = true;
               break;
 
@@ -982,6 +988,7 @@ public void escribirTablaSimbolos() {
 
     /*Funcion que recibe la tabla de simbolos y el id como hilera para retornar el tipo
     */
+/*
     public String getTipo(ArrayList<String> tablasSimbolos, String id){
         String tipo = "null";
         for (String token : tablasSimbolos){
@@ -991,6 +998,45 @@ public void escribirTablaSimbolos() {
             }
         }
     }
+*/
+    public TipoDato validarTipos(String ope, Dato op1, Dato op2, ArrayList<TipoDato> tipos) {
+      if (op1.getTipo() != op2.getTipo()) {//Se valida la igualdad de tipos
+        //System.out.println("Error semántico en la linea " + (lex.getLine()+1) + " Columna " + (lex.getColumn()+1) + ": " + "Expresiones " + op1.getTipo().toString() + ", " + op2.getTipo().toString() + " incompatibles para realizar la " + ope);
+        semantic_error("misc",("Error semantico en la linea " + (lex.getLine()+1) + " Columna " + (lex.getColumn()+1) + ": " + "Expresiones " + op1.getTipo().toString() + ", " + op2.getTipo().toString() + " incompatibles para realizar la " + ope));
+        return TipoDato.NULO;
+      }
+      if (!tipos.contains(op1.getTipo())) {
+        //System.out.println("Error semantico en linea: " + (lex.getLine()+1) + " Columna:" + (lex.getColumn()+1) + ": " + "Tipo " + op1.getTipo().toString() + " invalido para" + ope);
+        semantic_error("misc",("Error semantico en la linea " + (lex.getLine()+1) + " Columna " + (lex.getColumn()+1) + ": " + "Expresiones " + op1.getTipo().toString() + ", " + op2.getTipo().toString() + " incompatibles para realizar la " + ope));
+        return TipoDato.NULO;
+      }
+      return op1.getTipo();
+    }
+
+    public String existeValor(String pSim){
+      for (Simbolo valor : pilaSimbolos.get(currHash).getTablaSimbolos()) {
+        if (valor.getId() == pSim) {
+          //return value.getDireccion();
+          return " ";
+        }
+      }
+      return null;
+    }
+
+
+    public TipoDato getTipo(String pId, boolean reportar){
+        for (Simbolo dato : pilaSimbolos.get(currHash).getTablaSimbolos()) {
+              System.out.println("A: "+dato.getId());
+          if (dato.getId().equals(pId)) {
+            return Dato.tipoFromString(dato.getTipo());
+          }
+        }
+        if (reportar){
+          semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + pId));
+        }
+        return TipoDato.NULO;
+    }
+
 
     public void hola(){
         System.out.println("Hola");
@@ -1658,8 +1704,10 @@ public void escribirTablaSimbolos() {
                     }
                     
                     if(elementoExiste == false){
-                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
-                        //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
+                        pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString(), per.toString()));
+                        //funcs.get(funcs.size()-1).insertarTipoParametro(Dato.tipoFromString(t.toString()));
+                        pilaSimbolos.get(currHash).incrementarIndice(4);                    
+                        listaTablasSimbolos.get(currHash).add(tipoEntrada);                       
                     }
                     else{
                         semantic_error("local", per.toString());
@@ -1681,8 +1729,11 @@ public void escribirTablaSimbolos() {
 		int perleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		//Se ingresan a la tabla la info del simbolo declarado
- 
+                    var data = (Dato)e;
                     String tipoDato = " Tipo Dato: ";
                     tipoDato =  tipoDato + t.toString()  + ".\n";
                     String nombreDato = " Nombre: ";
@@ -1703,8 +1754,9 @@ public void escribirTablaSimbolos() {
                         }
                     }
                     
-                    if(elementoExiste == false){
+                    if(elementoExiste == false){                 
                         listaTablasSimbolos.get(currHash).add(tipoEntrada);
+
                         //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
                     }
                     //listaTablasSimbolos.get(currHash).add(tipoEntrada); 
@@ -1727,8 +1779,13 @@ public void escribirTablaSimbolos() {
 		int perleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
 		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		//Se ingresan a la tabla la info del simbolo declarado
- 
+                    var data = (Dato)e;
+                    //System.out.println("\n INDICE DEL ARREGLO es:" + data.getTipo());
+                    
                     String tipoDato = " Tipo Dato: ";
                     tipoDato =  tipoDato +  t.toString() + "[ ] .\n";
                     String nombreDato = " Nombre: ";
@@ -1751,8 +1808,17 @@ public void escribirTablaSimbolos() {
                     }
                     
                     if(elementoExiste == false){
-                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
-                        //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
+                        if(data.getTipo() == TipoDato.INT){
+                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString(), per.toString()));
+                            pilaSimbolos.get(currHash).incrementarIndice(4); 
+                            listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                            //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");   
+                        }                     
+                        else{
+//                          //errorActual = "Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + pExpresion + " no es valido para incializar arreglos";
+                            //data = "";
+                            semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + data.getTipo() + " no es valido para incializar arreglos"));
+                        }
                     }
                     else{
                         semantic_error("local", per.toString());
@@ -1930,7 +1996,10 @@ public void escribirTablaSimbolos() {
           case 54: // exprRegalo ::= tlsantaclaus 
             {
               Object RESULT =null;
-
+		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = l; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exprRegalo",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1939,7 +2008,10 @@ public void escribirTablaSimbolos() {
           case 55: // exprRegalo ::= regalocompradoRelacional 
             {
               Object RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = e; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exprRegalo",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1948,7 +2020,10 @@ public void escribirTablaSimbolos() {
           case 56: // exprRegalo ::= regaloManual 
             {
               Object RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = e; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exprRegalo",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1957,7 +2032,10 @@ public void escribirTablaSimbolos() {
           case 57: // exprRegalo ::= regaloprinBinario 
             {
               Object RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = e; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exprRegalo",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1966,7 +2044,10 @@ public void escribirTablaSimbolos() {
           case 58: // exprRegalo ::= regaloprinUnario 
             {
               Object RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = e; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exprRegalo",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1975,7 +2056,19 @@ public void escribirTablaSimbolos() {
           case 59: // exprRegalo ::= PERSONA 
             {
               Object RESULT =null;
-
+		int perleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                                    if (getTipo(per.toString(), true) != TipoDato.NULO) {
+                                          //!var dir = getDireccion(id.toString());
+                                          //!var registro = getUnoccupiedRegister();
+                                          //!codeBuffer.append("lw " + registro + ", " + dir + "\n");
+                                          RESULT = new Dato(per.toString(), getTipo(per.toString(), true));//, registro);
+                                    } else {
+                                          RESULT = new Dato("null", TipoDato.NULO);
+                                        }
+                                    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exprRegalo",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2356,14 +2449,17 @@ public void escribirTablaSimbolos() {
                             if (entry.contains(nombreDato)) {
                                 elementoExiste = true;
                                 //listaTablasSimbolos.get(currHash).add(tipoEntrada);
-                                System.out.println("\nVARIABLE HA SIDO DECLARADA");
+                                //System.out.println("\nVARIABLE HA SIDO DECLARADA");
                                 
                             }
                         }
                     }
                     
                     if(elementoExiste == false){
+                        pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("parametro", t.toString(), per.toString()));
+                        funcs.get(funcs.size()-1).insertarTipoParametro(Dato.tipoFromString(t.toString()));
                         listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                        pilaSimbolos.get(currHash).incrementarIndice(4);
                         //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
                     }   
                     else{
@@ -2405,7 +2501,33 @@ public void escribirTablaSimbolos() {
           case 102: // regaloprinUnario ::= QUIEN PERSONA 
             {
               Object RESULT =null;
+		int perleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
 
+                        var type = getTipo(per.toString(),false);
+                        if((existeValor(per.toString())) != null){
+                            System.out.println("ENTRO AQUILAS?");
+                            semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + per.toString()));
+                            RESULT = new Dato("null", TipoDato.NULO);
+                        }
+                        else{ 
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato("--" + per.toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato("--" + per.toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que el tipo " + type + " no es valido en incremento para: " + per.toString()));
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            }                            
+                        }                         
+                    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinUnario",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2414,7 +2536,33 @@ public void escribirTablaSimbolos() {
           case 103: // regaloprinUnario ::= GRINCH PERSONA 
             {
               Object RESULT =null;
+		int perleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int perright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object per = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
 
+                        var type = getTipo(per.toString(),false);
+                        if((existeValor(per.toString())) != null){
+                            System.out.println("ENTRO AQUILAS?");
+                            semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido el id: " + per.toString()));
+                            RESULT = new Dato("null", TipoDato.NULO);
+                        }
+                        else{ 
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato("++" + per.toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato("++" + per.toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que el tipo " + type + " no es valido en incremento para: " + per.toString()));
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            }                            
+                        }                         
+                    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinUnario",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2423,7 +2571,30 @@ public void escribirTablaSimbolos() {
           case 104: // regaloprinBinario ::= exprRegalo sum_dasher exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("suma", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                                System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " + " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " + " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2432,7 +2603,30 @@ public void escribirTablaSimbolos() {
           case 105: // regaloprinBinario ::= exprRegalo res_dancer exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("resta", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                               //System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " - " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " - " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2441,7 +2635,30 @@ public void escribirTablaSimbolos() {
           case 106: // regaloprinBinario ::= exprRegalo mul_prancer exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("multiplicacion", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                               //System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " * " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " * " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                           // System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2450,7 +2667,30 @@ public void escribirTablaSimbolos() {
           case 107: // regaloprinBinario ::= exprRegalo div_int_vixen exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT));
+                            var type = validarTipos("division entera", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                               //System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " // " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                               //System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " // " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            //System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2459,7 +2699,30 @@ public void escribirTablaSimbolos() {
           case 108: // regaloprinBinario ::= exprRegalo div_float_blitzen exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.FLOAT));
+                            var type = validarTipos("division flotante", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                               //System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " / " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                              // System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " / " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2468,7 +2731,30 @@ public void escribirTablaSimbolos() {
           case 109: // regaloprinBinario ::= exprRegalo mod_comet exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("modulo", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                               System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " % " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                               System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " % " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2477,7 +2763,30 @@ public void escribirTablaSimbolos() {
           case 110: // regaloprinBinario ::= exprRegalo pow_cupid exprRegalo 
             {
               Object RESULT =null;
-
+		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            var e1 = (Dato)a;
+                            //var reg = getUnoccupiedRegister();
+                            var e2 = (Dato)b;
+                            var tipos =  new ArrayList<TipoDato>(Arrays.asList(TipoDato.INT, TipoDato.FLOAT));
+                            var type = validarTipos("potencia", e1, e2, tipos);
+                            if(type == TipoDato.INT){
+//                               System.out.println("ENTRO AQUI1?");
+                                RESULT = new Dato(e1.getValor().toString() + " ** " + e2.getValor().toString(), TipoDato.INT);
+                            }
+                            else if(type == TipoDato.FLOAT){
+ //                               System.out.println("ENTRO AQUI2?");
+                                RESULT = new Dato(e1.getValor().toString() + " ** " + e2.getValor().toString(), TipoDato.FLOAT);
+                            }
+                            else{
+    //                            System.out.println("ENTRO AQUI3?");
+                                RESULT = new Dato("null", TipoDato.NULO);
+                            } 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("regaloprinBinario",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
