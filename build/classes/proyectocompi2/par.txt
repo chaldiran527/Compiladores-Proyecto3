@@ -525,9 +525,33 @@ auxLineasDeNavidad ::= creaRegalo FINREGALO | asignaRegalo FINREGALO
                         | NARRA ABRECUENTO exprRegalo CIERRACUENTO FINREGALO
                         //print("",1,2,3)|
                         | NARRA ABRECUENTO l_string_nicolas SEPARAREGALO expresionesBastoncitos CIERRACUENTO FINREGALO
-                                | RETORNAREGALO exprRegalo FINREGALO //RETORNAREGALO exprRegalo FINREGALO
+                        | RETORNAREGALO exprRegalo:ex FINREGALO //RETORNAREGALO exprRegalo FINREGALO
+{:
+                        var typeFunc = funcs.get(funcs.size()-1).getTipoReturn(); //
+                        var typeExpr = ((Dato)ex).getTipo();
+
+                        if (typeExpr != typeFunc) {
+                          semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Debido a que el retorno es invalido para la funcion de tipo: " + typeFunc.toString() ));
+                        }
+                        else {
+                          funcs.get(funcs.size()-1).setTHayRetorno(true);
+                        }
+:}
+                                | RETORNAREGALO FINREGALO   //ver currhash
+{:
+
+                        var typeFunc = funcs.get(funcs.size()-1).getTipoReturn(); //
+                        //var typeExpr = ((Dato)ex).getTipo();
+
+                        if (typeFunc != TipoDato.VOID) {
+                          semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Debido a que el retorno es invalido para la funcion de tipo: " + typeFunc.toString() ));
+                        }
+                        else {
+                          funcs.get(funcs.size()-1).setTHayRetorno(true);
+                        }                        
+:}
                                 | codigoBolsaNavidena
-                                | CORTA FINREGALO 
+                                | CORTA FINREGALO //Agregar manejo del break 
                                 | error FINREGALO;
 
 //Creacion, llamados y asignaciones a variables, incluyendo arreglos
@@ -795,7 +819,7 @@ exprRegalo ::=  tlsantaclaus :l {: RESULT = l; :}
                                 | PERSONA ABREEMPAQUE exprRegalo CIERRAEMPAQUE 
                                 | ABRECUENTO expresionesBastoncitos CIERRACUENTO
 				| ABREEMPAQUE expresionesBastoncitos CIERRAEMPAQUE
-                                | pedirBolsaNavidena; //
+                                | pedirBolsaNavidena:p {: RESULT = p; :}; //
 
 
 //Estructuras de control utilizadas en el lenguaje

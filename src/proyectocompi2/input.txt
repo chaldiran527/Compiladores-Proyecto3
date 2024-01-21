@@ -17,6 +17,7 @@ function void func1(char x22,char x23, int x24){@semantico borrar parametro
         x22|@miChar|
         ++x24|
         local int hola2 <= func1('a','b','c')|
+        return |
 
 /_@INICIO COMENTARIO 1
         var <= ++var + 1 + funciont()|

@@ -1,7 +1,7 @@
 
 Tabla de simbolo: func1
 Valores : 
-Tipo Entrada: Funcion, Nombre: func1, Tipo Dato: void.
+Tipo Entrada: Funcion, Nombre: func1, Tipo Dato: int.
 Tipo Entrada: Parametro, Nombre: x22, Tipo Dato: char.
 Tipo Entrada: Parametro, Nombre: x23, Tipo Dato: char.
 Tipo Entrada: Parametro, Nombre: x24, Tipo Dato: int.
