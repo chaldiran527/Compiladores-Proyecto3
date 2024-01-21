@@ -736,9 +736,38 @@ pedirBolsaNavidena ::= PERSONA:per ABRECUENTO CIERRACUENTO
 :}
 
                                            |
-					   PERSONA ABRECUENTO expresionesBastoncitos CIERRACUENTO
-
-					   | readBolsaNavidena ;//printBolsaNavidena ;//;
+PERSONA:per ABRECUENTO expresionesBastoncitos:es CIERRACUENTO
+{:
+    RESULT = new Dato("null", TipoDato.NULO);
+    var func = buscarFunc(per.toString()); //
+    if (func == null) {
+       semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no se ha definido la funcion: " + per.toString()) );
+    }
+    else {
+      var nParams = func.getTParams();
+      var bastoncitos = (ArrayList<Dato>)es;
+      boolean paramValidos = true;
+      System.out.println("Num de Params es: " + nParams.length);
+      System.out.println("Num de bastoncitos es: " + bastoncitos.size());
+      if (nParams.length != bastoncitos.size()) {
+        paramValidos = false;
+        semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que no hay cantidad suficiente de parametros en la funcion: " + per.toString()) );
+      }
+      else {
+        for (int k = 0; k < nParams.length; k++) {
+          if (nParams[k] != bastoncitos.get(k).getTipo()) {
+            paramValidos = false;
+            semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que los parametros no son del tipo correcto en la llamada a la funcion: " + per.toString()) );
+            break;
+          }
+        }
+        if(paramValidos == true){
+            RESULT = new Dato("null", func.getTipoReturn());
+        }
+      }
+    }
+:}
+        | readBolsaNavidena ;//printBolsaNavidena ;//;
 
 
 //Llamados de print (expresion) y ("", , ...)
@@ -930,8 +959,21 @@ regalocompradoRelacional ::= exprRegalo:a g_merryberry exprRegalo:b
 
 
 //Lista de expresiones (,,), definidos recursivamente para poder tener uno o mas 
-expresionesBastoncitos ::= defExprBastoncito | expresionesBastoncitos SEPARAREGALO  defExprBastoncito ;
-defExprBastoncito ::= exprRegalo;
+//expresionesBastoncitos ::= defExprBastoncito | expresionesBastoncitos SEPARAREGALO  defExprBastoncito ;
+expresionesBastoncitos ::= exprRegalo:ex 
+  {: 
+    var bastoncitos = new ArrayList<Dato>();
+    bastoncitos.add((Dato)ex);
+    RESULT = bastoncitos;
+  :}                        
+   | expresionesBastoncitos:es SEPARAREGALO  exprRegalo:ex 
+  {: 
+    var bastoncitos = (ArrayList<Dato>)es;
+    bastoncitos.add((Dato)ex);
+    RESULT = bastoncitos;
+  :} ;
+
+//defExprBastoncito ::= exprRegalo ;
 
 //Parametros de funciones (,,), definidos recursivamente para poder tener uno o mas 
 paramBastoncitos ::= defParamBastoncito | paramBastoncitos SEPARAREGALO defParamBastoncito ;
