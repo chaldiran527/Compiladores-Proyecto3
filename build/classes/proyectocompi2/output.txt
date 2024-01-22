@@ -1,30 +1,30 @@
 Codigo Token: 54, Nombre Token: FESTIVAL, Valor: function, Linea: 3, Columna: 1
 
-Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 3, Columna: 10
+Codigo Token: 53, Nombre Token: SINREGALO, Valor: void, Linea: 3, Columna: 10
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: func1, Linea: 3, Columna: 14
+Codigo Token: 48, Nombre Token: PERSONA, Valor: func1, Linea: 3, Columna: 15
 
-Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 3, Columna: 19
+Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 3, Columna: 20
 
-Codigo Token: 57, Nombre Token: t_char_dedmoroz, Valor: char, Linea: 3, Columna: 20
+Codigo Token: 57, Nombre Token: t_char_dedmoroz, Valor: char, Linea: 3, Columna: 21
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: x22, Linea: 3, Columna: 25
+Codigo Token: 48, Nombre Token: PERSONA, Valor: x22, Linea: 3, Columna: 26
 
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 3, Columna: 28
+Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 3, Columna: 29
 
-Codigo Token: 57, Nombre Token: t_char_dedmoroz, Valor: char, Linea: 3, Columna: 29
+Codigo Token: 57, Nombre Token: t_char_dedmoroz, Valor: char, Linea: 3, Columna: 30
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: x23, Linea: 3, Columna: 34
+Codigo Token: 48, Nombre Token: PERSONA, Valor: x23, Linea: 3, Columna: 35
 
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 3, Columna: 37
+Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 3, Columna: 38
 
-Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 3, Columna: 39
+Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 3, Columna: 40
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: x24, Linea: 3, Columna: 43
+Codigo Token: 48, Nombre Token: PERSONA, Valor: x24, Linea: 3, Columna: 44
 
-Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 3, Columna: 46
+Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 3, Columna: 47
 
-Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 3, Columna: 47
+Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 3, Columna: 48
 
 Codigo Token: 59, Nombre Token: NATIVIDAD, Valor: local, Linea: 4, Columna: 2
 
@@ -120,51 +120,47 @@ Codigo Token: 59, Nombre Token: NATIVIDAD, Valor: local, Linea: 14, Columna: 9
 
 Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 14, Columna: 15
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: arreglo, Linea: 14, Columna: 19
+Codigo Token: 48, Nombre Token: PERSONA, Valor: arreglo2, Linea: 14, Columna: 19
 
-Codigo Token: 4, Nombre Token: ABREEMPAQUE, Valor: [, Linea: 14, Columna: 27
+Codigo Token: 4, Nombre Token: ABREEMPAQUE, Valor: [, Linea: 14, Columna: 28
 
-Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 2, Linea: 14, Columna: 28
+Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 2, Linea: 14, Columna: 29
 
-Codigo Token: 5, Nombre Token: CIERRAEMPAQUE, Valor: ], Linea: 14, Columna: 29
+Codigo Token: 5, Nombre Token: CIERRAEMPAQUE, Valor: ], Linea: 14, Columna: 30
 
-Codigo Token: 51, Nombre Token: ENTREGA, Valor: <=, Linea: 14, Columna: 31
+Codigo Token: 51, Nombre Token: ENTREGA, Valor: <=, Linea: 14, Columna: 32
 
-Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 14, Columna: 34
+Codigo Token: 2, Nombre Token: ABREREGALO, Valor: {, Linea: 14, Columna: 35
 
-Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 1, Linea: 14, Columna: 35
+Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 1, Linea: 14, Columna: 36
 
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 14, Columna: 36
+Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 14, Columna: 37
 
-Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 2, Linea: 14, Columna: 37
+Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 2, Linea: 14, Columna: 38
 
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 14, Columna: 38
+Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 14, Columna: 39
 
-Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 3, Linea: 14, Columna: 39
+Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 3, Linea: 14, Columna: 40
 
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 14, Columna: 40
+Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 14, Columna: 41
 
-Codigo Token: 13, Nombre Token: l_int_dedmoroz, Valor: 4, Linea: 14, Columna: 41
-
-Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 14, Columna: 42
-
-Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 14, Columna: 43
+Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 14, Columna: 42
 
 Codigo Token: 59, Nombre Token: NATIVIDAD, Valor: local, Linea: 16, Columna: 9
 
-Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 16, Columna: 15
+Codigo Token: 9, Nombre Token: t_float_santa, Valor: float, Linea: 16, Columna: 15
 
-Codigo Token: 48, Nombre Token: PERSONA, Valor: hola, Linea: 16, Columna: 19
+Codigo Token: 48, Nombre Token: PERSONA, Valor: hola, Linea: 16, Columna: 21
 
-Codigo Token: 51, Nombre Token: ENTREGA, Valor: <=, Linea: 16, Columna: 24
+Codigo Token: 51, Nombre Token: ENTREGA, Valor: <=, Linea: 16, Columna: 26
 
-Codigo Token: 16, Nombre Token: l_float_padrenavidad, Valor: 3.1, Linea: 16, Columna: 27
+Codigo Token: 16, Nombre Token: l_float_padrenavidad, Valor: 3.1, Linea: 16, Columna: 29
 
-Codigo Token: 30, Nombre Token: div_float_blitzen, Valor: /, Linea: 16, Columna: 31
+Codigo Token: 30, Nombre Token: div_float_blitzen, Valor: /, Linea: 16, Columna: 33
 
-Codigo Token: 16, Nombre Token: l_float_padrenavidad, Valor: 6.2, Linea: 16, Columna: 33
+Codigo Token: 16, Nombre Token: l_float_padrenavidad, Valor: 6.2, Linea: 16, Columna: 35
 
-Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 16, Columna: 36
+Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 16, Columna: 38
 
 Codigo Token: 48, Nombre Token: PERSONA, Valor: x22, Linea: 17, Columna: 9
 
@@ -176,36 +172,10 @@ Codigo Token: 48, Nombre Token: PERSONA, Valor: x24, Linea: 18, Columna: 11
 
 Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 18, Columna: 14
 
-Codigo Token: 59, Nombre Token: NATIVIDAD, Valor: local, Linea: 19, Columna: 9
-
-Codigo Token: 15, Nombre Token: t_int_sinterklass, Valor: int, Linea: 19, Columna: 15
-
-Codigo Token: 48, Nombre Token: PERSONA, Valor: hola2, Linea: 19, Columna: 19
-
-Codigo Token: 51, Nombre Token: ENTREGA, Valor: <=, Linea: 19, Columna: 25
-
-Codigo Token: 48, Nombre Token: PERSONA, Valor: func1, Linea: 19, Columna: 28
-
-Codigo Token: 6, Nombre Token: ABRECUENTO, Valor: (, Linea: 19, Columna: 33
-
-Codigo Token: 12, Nombre Token: l_MINIREGALO, Valor: 'a', Linea: 19, Columna: 34
-
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 19, Columna: 37
-
-Codigo Token: 12, Nombre Token: l_MINIREGALO, Valor: 'b', Linea: 19, Columna: 38
-
-Codigo Token: 8, Nombre Token: SEPARAREGALO, Valor: ,, Linea: 19, Columna: 41
-
-Codigo Token: 12, Nombre Token: l_MINIREGALO, Valor: 'c', Linea: 19, Columna: 42
-
-Codigo Token: 7, Nombre Token: CIERRACUENTO, Valor: ), Linea: 19, Columna: 45
-
-Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 19, Columna: 46
-
 Codigo Token: 52, Nombre Token: RETORNAREGALO, Valor: return, Linea: 20, Columna: 9
 
 Codigo Token: 23, Nombre Token: FINREGALO, Valor: |, Linea: 20, Columna: 16
 
 Codigo Token: 3, Nombre Token: CIERRAREGALO, Valor: }, Linea: 31, Columna: 1
 
-Cantidad de lexemas encontrados: 105
+Cantidad de lexemas encontrados: 90
