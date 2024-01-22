@@ -11,12 +11,12 @@ function void func1(char x22,char x23, int x24){@semantico borrar parametro
 	@local float fl1 <= 56.6| @semantico fl1
 	local int in1 <= false|
 	local char arreglo [10]| @sintatico lit
-        local int arreglo [2] <= {1,2,3,4}|
+        local int arreglo2 [2] <= {1,2,3}|
 	@arr[1] <= 'c'|
-        local int hola <= 3.1 / 6.2|
+        local float hola <= 3.1 / 6.2|
         x22|@miChar|
         ++x24|
-        local int hola2 <= func1('a','b','c')|
+@        local int hola2 <= func1(1,1,1)|
         return |
 
 /_@INICIO COMENTARIO 1

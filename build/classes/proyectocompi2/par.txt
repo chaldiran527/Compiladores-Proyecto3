@@ -307,6 +307,7 @@ navidad ::=
         //listaTablasSimbolos.get(currHash).add(tipoEntrada);
         semantic_error("main","");
     } 
+    //validarFuncs();
     imprimirTablaSimbolos();
     escribirTablaSimbolos();
     System.out.println("Fin del parseo...\n");
@@ -615,9 +616,17 @@ creaRegalo ::= NATIVIDAD tsantaclaus:t PERSONA:per
                         }
                     }
                     
-                    if(elementoExiste == false){                 
-                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                    if(elementoExiste == false){    
+                       if(data.getTipo() == Dato.tipoFromString(t.toString())){
+                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString(), per.toString()));
+                            //funcs.get(funcs.size()-1).insertarTipoParametro(Dato.tipoFromString(t.toString()));
+                            pilaSimbolos.get(currHash).incrementarIndice(4);                              
+                            listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                        }              
+                        else{
+                            semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + data.getTipo() + " no es valido para la variable " + per.toString()));
 
+                        }
                         //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
                     }
                     //listaTablasSimbolos.get(currHash).add(tipoEntrada); 
@@ -654,7 +663,7 @@ creaRegalo ::= NATIVIDAD tsantaclaus:t PERSONA:per
                     
                     if(elementoExiste == false){
                         if(data.getTipo() == TipoDato.INT){
-                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString(), per.toString()));
+                            pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString() + "[]", per.toString()));
                             pilaSimbolos.get(currHash).incrementarIndice(4); 
                             listaTablasSimbolos.get(currHash).add(tipoEntrada);
                             //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");   
@@ -662,6 +671,7 @@ creaRegalo ::= NATIVIDAD tsantaclaus:t PERSONA:per
                         else{
 //                          //errorActual = "Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + pExpresion + " no es valido para incializar arreglos";
                             //data = "";
+
                             semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + data.getTipo() + " no es valido para incializar arreglos"));
                         }
                     }
@@ -670,9 +680,10 @@ creaRegalo ::= NATIVIDAD tsantaclaus:t PERSONA:per
                     } 
                         
                 :}
-                | NATIVIDAD tsantaclaus:t PERSONA:per ABREEMPAQUE exprRegalo CIERRAEMPAQUE ENTREGA exprRegalo
+                | NATIVIDAD tsantaclaus:t PERSONA:per ABREEMPAQUE exprRegalo:e1 CIERRAEMPAQUE ENTREGA asignaMultiplesRegalos:e2 //exprRegalo:e2
                 {://Se ingresan a la tabla la info del simbolo declarado
- 
+                    var data1 = (Dato)e1;
+                    var data2 = (Dato)e2;
                     String tipoDato = " Tipo Dato: ";
                     tipoDato =  tipoDato +  t.toString() + "[ ] .\n";
                     String nombreDato = " Nombre: ";
@@ -694,19 +705,46 @@ creaRegalo ::= NATIVIDAD tsantaclaus:t PERSONA:per
                         }
                     }
                     
-                    if(elementoExiste == false){
-                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                    if(elementoExiste == false){//data1.getTipo() == TipoDato.INT
+                        if(data1.getTipo() == TipoDato.INT){
+
+                            if(data2.getTipo() != TipoDato.NULO){
+                                TipoDato type = Dato.tipoFromString(t.toString() + "[]");
+                                if(data2.getTipo() != type){
+                                    semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Tipo de dato declarado invalido para el arreglo")); 
+                                }
+                                else{//////
+                                    if((int)data1.getValor() != e2.getValor().size()){
+                                        semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "No se han incluido todas las expresiones que se deben ingresar al arreglo")); 
+                                    }
+                                    else{
+                                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                        //pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString() + "[]", per.toString()));
+                                        pilaSimbolos.get(currHash).incrementarIndice(4); 
+                                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                    }
+                                }
+                             }
+                             else{
+                                semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Asignacion de arreglo incorrecta"));                                     
+                             }
+                        }
+                        else{
+                            System.out.println("IS IT HEREEEE");
+                            semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + data1.getTipo() + " no es valido para incializar arreglos"));                        
+                        }
                         //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
                     }
                     else{
                         semantic_error("local", per.toString());
-                    }                         
+                    }                
                 :}
-		| NATIVIDAD tsantaclaus:t PERSONA:per ABREEMPAQUE exprRegalo CIERRAEMPAQUE asignaMultiplesRegalos //ABREREGALO expresionesBastoncitos CIERRAREGALO
+		| NATIVIDAD tsantaclaus:t PERSONA:per ABREEMPAQUE exprRegalo:e1 CIERRAEMPAQUE asignaMultiplesRegalos:e2 //ABREREGALO expresionesBastoncitos CIERRAREGALO
                 {://Se ingresan a la tabla la info del simbolo declarado
- 
+                    var data1 = (Dato)e1;
+                    var data2 = (Dato)e2;
                     String tipoDato = " Tipo Dato: ";
-                    tipoDato =  tipoDato +  t.toString() + "[ ].\n";
+                    tipoDato =  tipoDato +  t.toString() + "[ ] .\n";
                     String nombreDato = " Nombre: ";
                     nombreDato = nombreDato + per.toString() + ",";
                     String tipoEntrada = "Tipo Entrada: ";
@@ -726,20 +764,73 @@ creaRegalo ::= NATIVIDAD tsantaclaus:t PERSONA:per
                         }
                     }
                     
-                    if(elementoExiste == false){
-                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                    if(elementoExiste == false){//data1.getTipo() == TipoDato.INT
+                        if(data1.getTipo() == TipoDato.INT){
+
+                            if(data2.getTipo() != TipoDato.NULO){
+                                TipoDato type = Dato.tipoFromString(t.toString() + "[]");
+                                if(data2.getTipo() != type){
+                                    semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Tipo de dato declarado invalido para el arreglo")); 
+                                }
+                                else{//////(int)data1.getValor()
+                                    var indice = (String)data1.getValor();
+                                    if(Integer.parseInt(indice) != ((ArrayList<Dato>)data2.getValor()).size()){
+                                        semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "No se han incluido todas las expresiones que se deben ingresar al arreglo")); 
+                                    }
+                                    else{
+                                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                        //pilaSimbolos.get(currHash).getTablaSimbolos().add(new Simbolo("local", t.toString() + "[]", per.toString()));
+                                        pilaSimbolos.get(currHash).incrementarIndice(4); 
+                                        listaTablasSimbolos.get(currHash).add(tipoEntrada);
+                                    }
+                                }
+                             }
+                             else{
+                                semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Asignacion de arreglo incorrecta"));                                     
+                             }
+                        }
+                        else{
+
+                            semantic_error("misc",("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "El tipo " + data1.getTipo() + " no es valido para incializar arreglos"));                        
+                        }
                         //System.out.println("\nVARIABLE NO HA SIDO DECLARADA");                        
                     }
                     else{
                         semantic_error("local", per.toString());
-                    } 
-                        
+                    }
                 :}
                 ; // | PERSONA ;
 
-asignaRegalo ::= PERSONA ABREEMPAQUE exprRegalo CIERRAEMPAQUE ENTREGA exprRegalo | PERSONA ENTREGA exprRegalo ;
+asignaRegalo ::= PERSONA:per ABREEMPAQUE exprRegalo:e CIERRAEMPAQUE ENTREGA exprRegalo:e 
 
-asignaMultiplesRegalos ::= ENTREGA ABREREGALO expresionesBastoncitos CIERRAREGALO;
+                                | 
+
+                                  PERSONA:per ENTREGA exprRegalo:e ;
+
+asignaMultiplesRegalos ::= ENTREGA ABREREGALO expresionesBastoncitos:e CIERRAREGALO {:
+                             var expresiones = (ArrayList<Dato>)e;
+                             boolean mismosTipos = true;
+
+                             for(Dato expr: expresiones){
+                                if(expr.getTipo() != expresiones.get(0).getTipo()){
+                                    mismosTipos = false;
+                                    semantic_error("misc", ("Error semantico en la linea " + (lex.getLine() + 1) + " columna " + (lex.getColumn() + 1) + ": " + "Ya que se tienen diferentes tipos en el conjunto de expresiones") );
+                                    RESULT = new Dato("null", TipoDato.NULO);
+                                }
+                             }
+                             if(mismosTipos == true){
+                                if(expresiones.get(0).getTipo() == TipoDato.INT){
+                                    RESULT = new Dato(expresiones, TipoDato.INTARR); 
+                                }
+                                else if(expresiones.get(0).getTipo() == TipoDato.CHAR){
+                                    RESULT = new Dato(expresiones, TipoDato.CHARARR);
+                                }
+                                else {
+                                    RESULT = new Dato(expresiones, TipoDato.NULO);                                    
+                                }
+                             }
+                            :}
+;
 
 //Diferentes casos posibles de llamar a una funcion 
 pedirBolsaNavidena ::= PERSONA:per ABRECUENTO CIERRACUENTO 
@@ -961,7 +1052,7 @@ regalocompradoRelacional ::= exprRegalo:a g_merryberry exprRegalo:b
                             } :} 
                                 
                                 |
-                                    exprRegalo:a le_candycane exprRegalo:b 
+                        exprRegalo:a le_candycane exprRegalo:b 
 {:
                             var e1 = (Dato)a;
                             //var reg = getUnoccupiedRegister();

@@ -1,15 +1,13 @@
 
 Tabla de simbolo: func1
 Valores : 
-Tipo Entrada: Funcion, Nombre: func1, Tipo Dato: int.
+Tipo Entrada: Funcion, Nombre: func1, Tipo Dato: void.
 Tipo Entrada: Parametro, Nombre: x22, Tipo Dato: char.
 Tipo Entrada: Parametro, Nombre: x23, Tipo Dato: char.
 Tipo Entrada: Parametro, Nombre: x24, Tipo Dato: int.
 Tipo Entrada: Local, Nombre: miChar, Tipo Dato: char.
 Tipo Entrada: Local, Nombre: str1, Tipo Dato: string.
 Tipo Entrada: Local, Nombre: fl1, Tipo Dato: float.
-Tipo Entrada: Local, Nombre: in1, Tipo Dato: int.
 Tipo Entrada: Local, Nombre: arreglo, Tipo Dato: char[ ] .
-Tipo Entrada: Local, Nombre: hola, Tipo Dato: int.
-Tipo Entrada: Local, Nombre: hola2, Tipo Dato: int.
+Tipo Entrada: Local, Nombre: hola, Tipo Dato: float.
 
