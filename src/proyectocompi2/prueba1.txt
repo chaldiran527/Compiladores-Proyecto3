@@ -1,0 +1,22 @@
+ /_ esto es un comentario inicial _/
+ @Prueba 1...
+
+function void func1(char x22,char x23, int x24){@semantico 
+	local char x22 <= '!'| /_semantico x22_/
+	local char miChar <= '!'|
+	local char miChar <= '!'| 
+	local string str1 <= "Hola $%&/#$&) mundo"|
+
+	local float fl1|
+        local float fl1|
+	@local float fl1 <= 56.6|
+	local int in1 <= false|
+	local char arreglo [10]|
+        local int arreglo2 [2] <= {1,2,3}|
+	@arr[1] <= 'c'|
+        local float hola <= 3.1 / 6.2|
+        x22|@miChar|
+        ++x24|
+        local int hola2 <= func1('a','b',1)|
+        return |
+} 
